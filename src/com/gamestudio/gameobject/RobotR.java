@@ -33,6 +33,7 @@ public class RobotR extends ParticularObject {
         forwardAnim = CacheDataLoader.getInstance().getAnimation("robotR");
         forwardAnim.flipAllImage();
         startTimeToShoot = 0;
+        setPoints(100);
         setTimeForNoBehurt(300000000);
         setDamage(10);
         
@@ -114,5 +115,5 @@ public class RobotR extends ParticularObject {
         }
         //drawBoundForCollisionWithEnemy(g2);
     }
-    
+
 }

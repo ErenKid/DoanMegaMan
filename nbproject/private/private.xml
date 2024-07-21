@@ -2,9 +2,37 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
         <group name="NetBeanWorkSpace">
             <file>file:/C:/Users/phamn/Documents/NetBeansProjects/MegaMan2/src/com/thach/gameobject/PhysicalMap.java</file>
+        </group>
+        <group>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/Bullet.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/BackgroundMap.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/GameObject.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/YellowFlowerBullet.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/DarkRaise.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/userinterface/PlayerNameScreen.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/RocketBullet.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/Human.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/userinterface/InputManager.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/Camera.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/SmallRedGun.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/BulletManager.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/RedEyeBullet.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/RedEyeDevil.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/ParticularObject.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/state/GameWorldState.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/RobotR.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/userinterface/GamePanel.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/BlueFire.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/FinalBoss.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/RobotRBullet.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/PhysicalMap.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/state/MenuState.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/userinterface/GameFrame.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/DatabaseManager.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/ParticularObjectManager.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/MegaMan.java</file>
         </group>
     </open-files>
 </project-private>

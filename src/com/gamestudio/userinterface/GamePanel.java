@@ -4,74 +4,62 @@ import com.gamestudio.state.GameWorldState;
 import com.gamestudio.state.MenuState;
 import com.gamestudio.state.State;
 
-
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel implements Runnable, KeyListener{
+public class GamePanel extends JPanel implements Runnable, KeyListener {
 
-    State gameState;
-
-    InputManager inputManager;
-    
-    Thread gameThread;
-
+    private State gameState;
+    private InputManager inputManager;
+    private Thread gameThread;
     public boolean isRunning = true;
+    private String playerName;
 
-    public GamePanel(){
-
-        //gameState = new MenuState(this);
+    public GamePanel(String playerName) {
+        this.playerName = playerName;
         gameState = new GameWorldState(this);
-        
         inputManager = new InputManager(gameState);
-
     }
 
-    public void startGame(){
+    public void startGame() {
         gameThread = new Thread(this);
         gameThread.start();
     }
-    int a = 0;
+
     @Override
     public void run() {
-
         long previousTime = System.nanoTime();
         long currentTime;
         long sleepTime;
+        long period = 1000000000 / 80;
 
-        long period = 1000000000/80;
-
-        while(isRunning){
-
+        while (isRunning) {
             gameState.Update();
             gameState.Render();
-
-
             repaint();
 
             currentTime = System.nanoTime();
             sleepTime = period - (currentTime - previousTime);
-            try{
-
-                    if(sleepTime > 0)
-                            Thread.sleep(sleepTime/1000000);
-                    else Thread.sleep(period/2000000);
-
-            }catch(Exception e){}
+            try {
+                if (sleepTime > 0)
+                    Thread.sleep(sleepTime / 1000000);
+                else
+                    Thread.sleep(period / 2000000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             previousTime = System.nanoTime();
         }
-
     }
 
-    public void paint(Graphics g){
-
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         g.drawImage(gameState.getBufferedImage(), 0, 0, this);
-
     }
 
     @Override
@@ -91,5 +79,4 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         gameState = state;
         inputManager.setState(state);
     }
-    
 }

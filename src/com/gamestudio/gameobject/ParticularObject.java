@@ -27,7 +27,7 @@ public abstract class ParticularObject extends GameObject {
     private float speedX;
     private float speedY;
     private int blood;
-    
+    private int points;
     private int damage;
     
     private int direction;
@@ -39,6 +39,13 @@ public abstract class ParticularObject extends GameObject {
     private long startTimeNoBeHurt;
     private long timeForNoBeHurt;
 
+     public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
     public ParticularObject(float x, float y, float width, float height, float mass, int blood, GameWorldState gameWorld){
 
         // posX and posY are the middle coordinate of the object
@@ -171,69 +178,57 @@ public abstract class ParticularObject extends GameObject {
     }
 
     @Override
-    public void Update(){
-        switch(state){
-            case ALIVE:
-                
-                // note: SET DAMAGE FOR OBJECT NO DAMAGE
-                ParticularObject object = getGameWorld().particularObjectManager.getCollisionWidthEnemyObject(this);
-                if(object!=null){
-                    
-                    
-                    if(object.getDamage() > 0){
+   public void Update() {
+    switch (state) {
+        case ALIVE:
+            // Các phần cập nhật trạng thái ALIVE
 
-                        // switch state to fey if object die
-                        
-                        
-                        System.out.println("eat damage.... from collision with enemy........ "+object.getDamage());
-                        beHurt(object.getDamage());
-                    }
-                    
+            ParticularObject object = getGameWorld().particularObjectManager.getCollisionWidthEnemyObject(this);
+            if (object != null) {
+                if (object.getDamage() > 0) {
+                    beHurt(object.getDamage());
                 }
-                
-                
-                
-                break;
-                
-            case BEHURT:
-                if(behurtBackAnim == null){
+            }
+            break;
+
+        case BEHURT:
+            // Xử lý trạng thái BEHURT
+            if (behurtForwardAnim == null) {
+                state = NOBEHURT;
+                startTimeNoBeHurt = System.nanoTime();
+                if (getBlood() == 0)
+                    state = FEY;
+            } else {
+                behurtForwardAnim.Update(System.nanoTime());
+                if (behurtForwardAnim.isLastFrame()) {
+                    behurtForwardAnim.reset();
                     state = NOBEHURT;
+                    if (getBlood() == 0)
+                        state = FEY;
                     startTimeNoBeHurt = System.nanoTime();
-                    if(getBlood() == 0)
-                            state = FEY;
-                    
-                } else {
-                    behurtForwardAnim.Update(System.nanoTime());
-                    if(behurtForwardAnim.isLastFrame()){
-                        behurtForwardAnim.reset();
-                        state = NOBEHURT;
-                        if(getBlood() == 0)
-                            state = FEY;
-                        startTimeNoBeHurt = System.nanoTime();
-                    }
                 }
-                
-                break;
-                
-            case FEY:
-                
-                state = DEATH;
-                
-                break;
-            
-            case DEATH:
-                
-                
-                break;
-                
-            case NOBEHURT:
-                System.out.println("state = nobehurt");
-                if(System.nanoTime() - startTimeNoBeHurt > timeForNoBeHurt)
-                    state = ALIVE;
-                break;
-        }
-        
+            }
+            break;
+
+        case FEY:
+            // Đối tượng chết, cập nhật điểm số
+            if (getGameWorld() != null) {
+                getGameWorld().incrementScore(getPoints());
+            }
+            state = DEATH;
+            break;
+
+        case DEATH:
+            // Xử lý trạng thái DEATH
+            break;
+
+        case NOBEHURT:
+            if (System.nanoTime() - startTimeNoBeHurt > timeForNoBeHurt)
+                state = ALIVE;
+            break;
     }
+}
+
 
     public void drawBoundForCollisionWithMap(Graphics2D g2){
         Rectangle rect = getBoundForCollisionWithMap();

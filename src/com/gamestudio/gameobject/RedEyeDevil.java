@@ -21,7 +21,7 @@ public class RedEyeDevil extends ParticularObject {
     private Animation forwardAnim, backAnim;
     
     private long startTimeToShoot;
-    
+     
     private AudioClip shooting;
     
     public RedEyeDevil(float x, float y, GameWorldState gameWorld) {
@@ -31,6 +31,7 @@ public class RedEyeDevil extends ParticularObject {
         forwardAnim.flipAllImage();
         startTimeToShoot = 0;
         setDamage(10);
+        setPoints(100);
         setTimeForNoBehurt(300000000);
         shooting = CacheDataLoader.getInstance().getSound("redeyeshooting");
     }
@@ -85,5 +86,5 @@ public class RedEyeDevil extends ParticularObject {
         }
         //drawBoundForCollisionWithEnemy(g2);
     }
-    
+
 }

@@ -4,8 +4,8 @@ import com.gamestudio.state.GameWorldState;
 
 public abstract class GameObject {
 
-	private float posX;
-	private float posY;
+	float posX;
+	float posY;
 	
 	private GameWorldState gameWorld;
 	

@@ -18,6 +18,7 @@ import com.gamestudio.userinterface.GameFrame;
 import com.gamestudio.userinterface.GamePanel;
 import java.applet.AudioClip;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -27,7 +28,7 @@ public class GameWorldState extends State {
 	
     private BufferedImage bufferedImage;
     private int lastState;
-
+    private String playerName;
     public ParticularObjectManager particularObjectManager;
     public BulletManager bulletManager;
 
@@ -69,6 +70,7 @@ public class GameWorldState extends State {
     private int numberOfLife = 3;
     
     public AudioClip bgMusic;
+    private int score=0;
     
     public GameWorldState(GamePanel gamePanel){
             super(gamePanel);
@@ -83,6 +85,7 @@ public class GameWorldState extends State {
         
         bufferedImage = new BufferedImage(GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         megaMan = new MegaMan(400, 400, this);
+         megaMan.setPlayerName(playerName);
         physicalMap = new PhysicalMap(0, 0, this);
         backgroundMap = new BackgroundMap(0, 0, this);
         camera = new Camera(0, 50, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT, this);
@@ -313,75 +316,70 @@ public class GameWorldState extends State {
 
     }
 
-    public void Render(){
+    public void Render() {
+    Graphics2D g2 = (Graphics2D) bufferedImage.getGraphics();
 
-        Graphics2D g2 = (Graphics2D) bufferedImage.getGraphics();
+    if (g2 != null) {
 
-        if(g2!=null){
+        // Vẽ nền tùy thuộc vào trạng thái trò chơi
+        switch (state) {
+            case INIT_GAME:
+                g2.setColor(Color.BLACK);
+                g2.fillRect(0, 0, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT);
+                g2.setColor(Color.WHITE);
+                g2.drawString("PRESS ENTER TO CONTINUE", 400, 300);
+                break;
+            case PAUSEGAME:
+                g2.setColor(Color.BLACK);
+                g2.fillRect(300, 260, 500, 70);
+                g2.setColor(Color.WHITE);
+                g2.drawString("PRESS ENTER TO CONTINUE", 400, 300);
+                break;
+            case TUTORIAL:
+                backgroundMap.draw(g2);
+                if (tutorialState == MEETFINALBOSS) {
+                    particularObjectManager.draw(g2);
+                }
+                TutorialRender(g2);
+                break;
+            case GAMEWIN:
+            case GAMEPLAY:
+                backgroundMap.draw(g2);
+                particularObjectManager.draw(g2);  
+                bulletManager.draw(g2);
 
-            // NOTE: two lines below make the error splash white screen....
-            // need to remove this line
-            //g2.setColor(Color.WHITE);
-            //g2.fillRect(0, 0, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT);
-            
-            
-            //physicalMap.draw(g2);
-            
-            switch(state){
-                case INIT_GAME:
-                    g2.setColor(Color.BLACK);
-                    g2.fillRect(0, 0, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT);
-                    g2.setColor(Color.WHITE);
-                    g2.drawString("PRESS ENTER TO CONTINUE", 400, 300);
-                    break;
-                case PAUSEGAME:
-                    g2.setColor(Color.BLACK);
-                    g2.fillRect(300, 260, 500, 70);
-                    g2.setColor(Color.WHITE);
-                    g2.drawString("PRESS ENTER TO CONTINUE", 400, 300);
-                    break;
-                case TUTORIAL:
-                    backgroundMap.draw(g2);
-                    if(tutorialState == MEETFINALBOSS){
-                        particularObjectManager.draw(g2);
-                    }
-                    TutorialRender(g2);
-                    
-                    break;
-                case GAMEWIN:
-                case GAMEPLAY:
-                    backgroundMap.draw(g2);
-                    particularObjectManager.draw(g2);  
-                    bulletManager.draw(g2);
-                    
-                    g2.setColor(Color.GRAY);
-                    g2.fillRect(19, 59, 102, 22);
-                    g2.setColor(Color.red);
-                    g2.fillRect(20, 60, megaMan.getBlood(), 20);
-                    
-                    for(int i = 0; i < numberOfLife; i++){
-                        g2.drawImage(CacheDataLoader.getInstance().getFrameImage("hearth").getImage(), 20 + i*40, 18, null);
-                    }
-                    
-                    
-                    if(state == GAMEWIN){
-                        g2.drawImage(CacheDataLoader.getInstance().getFrameImage("gamewin").getImage(), 300, 300, null);
-                    }
-                    
-                    break;
-                case GAMEOVER:
-                    g2.setColor(Color.BLACK);
-                    g2.fillRect(0, 0, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT);
-                    g2.setColor(Color.WHITE);
-                    g2.drawString("GAME OVER!", 450, 300);
-                    break;
+                // Vẽ thanh máu
+                g2.setColor(Color.GRAY);
+                g2.fillRect(19, 59, 102, 22);
+                g2.setColor(Color.RED);
+                g2.fillRect(20, 60, megaMan.getBlood(), 20);
 
-            }
-            
+                // Vẽ số mạng
+                for (int i = 0; i < numberOfLife; i++) {
+                    g2.drawImage(CacheDataLoader.getInstance().getFrameImage("hearth").getImage(), 20 + i * 40, 18, null);
+                }
 
+                // Vẽ điểm số
+                g2.setColor(Color.WHITE);
+                g2.setFont(new Font("Arial", Font.BOLD, 20));
+                 g2.drawString("Score: " + score, 10, 20);
+
+                if (state == GAMEWIN) {
+                    g2.drawImage(CacheDataLoader.getInstance().getFrameImage("gamewin").getImage(), 300, 300, null);
+                }
+                break;
+            case GAMEOVER:
+                g2.setColor(Color.BLACK);
+                g2.fillRect(0, 0, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT);
+                g2.setColor(Color.WHITE);
+                g2.drawString("GAME OVER!", 450, 300);
+                break;
         }
 
+        g2.dispose(); // Giải phóng tài nguyên đồ họa
     }
+}
+
 
     public BufferedImage getBufferedImage(){
         return bufferedImage;
@@ -482,5 +480,19 @@ public class GameWorldState extends State {
                 break;
                 
         }}
-	
+
+    public ParticularObjectManager getParticularObjectManager() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+   public void incrementScore(int points) {
+        score += points; // Cập nhật điểm số
+        System.out.println("Score updated: " + score); // Hiển thị thông báo khi điểm số được cập nhật
+    }
+    public void keyPressed(KeyEvent e) {
+        // Xử lý phím nhấn, ví dụ: phím A để tăng điểm số
+        if (e.getKeyCode() == KeyEvent.VK_A) {
+            incrementScore(10); // Tăng 10 điểm khi nhấn phím A
+        }
+    }
 }

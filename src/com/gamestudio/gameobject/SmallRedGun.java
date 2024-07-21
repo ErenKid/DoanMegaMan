@@ -29,6 +29,7 @@ public class SmallRedGun extends ParticularObject{
         forwardAnim = CacheDataLoader.getInstance().getAnimation("smallredgun");
         forwardAnim.flipAllImage();
         startTimeToShoot = 0;
+        setPoints(100);
         setTimeForNoBehurt(300000000);
     }
 
@@ -86,5 +87,7 @@ public class SmallRedGun extends ParticularObject{
         }
         //drawBoundForCollisionWithEnemy(g2);
     }
-    
+
+   
+
 }

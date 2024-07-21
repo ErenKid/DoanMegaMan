@@ -10,7 +10,7 @@ import java.awt.Rectangle;
 public class MegaMan extends Human {
 
     public static final int RUNSPEED = 3;
-    
+    private String playerName; 
     private Animation runForwardAnim, runBackAnim, runShootingForwarAnim, runShootingBackAnim;
     private Animation idleForwardAnim, idleBackAnim, idleShootingForwardAnim, idleShootingBackAnim;
     private Animation dickForwardAnim, dickBackAnim;
@@ -77,6 +77,13 @@ public class MegaMan extends Human {
         flyShootingBackAnim = CacheDataLoader.getInstance().getAnimation("flyingupshoot");
         flyShootingBackAnim.flipAllImage();
         
+    }
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 
     @Override
@@ -338,8 +345,7 @@ public class MegaMan extends Human {
         }
     
     }
-    @Override
-    public void hurtingCallback(){
+    public void onDeath(){
         System.out.println("Call back hurting");
         hurtingSound.play();
     }
