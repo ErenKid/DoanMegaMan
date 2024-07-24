@@ -7,14 +7,17 @@
         </group>
         <group>
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/Bullet.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/DarkRaiseBullet.java</file>
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/BackgroundMap.java</file>
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/GameObject.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/effect/FrameImage.java</file>
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/YellowFlowerBullet.java</file>
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/DarkRaise.java</file>
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/userinterface/PlayerNameScreen.java</file>
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/RocketBullet.java</file>
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/Human.java</file>
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/userinterface/InputManager.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/database/DatabaseManager.java</file>
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/Camera.java</file>
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/SmallRedGun.java</file>
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/BulletManager.java</file>
@@ -30,7 +33,8 @@
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/PhysicalMap.java</file>
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/state/MenuState.java</file>
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/userinterface/GameFrame.java</file>
-            <file>file:/D:/SteamLibrary/rockman/src/DatabaseManager.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/state/State.java</file>
+            <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/effect/Animation.java</file>
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/ParticularObjectManager.java</file>
             <file>file:/D:/SteamLibrary/rockman/src/com/gamestudio/gameobject/MegaMan.java</file>
         </group>

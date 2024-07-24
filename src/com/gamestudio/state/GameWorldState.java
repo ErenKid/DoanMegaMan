@@ -19,9 +19,12 @@ import com.gamestudio.userinterface.GamePanel;
 import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.Font;
+import com.gamestudio.database.DatabaseManager;
+
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+
 
 
 public class GameWorldState extends State {
@@ -60,7 +63,7 @@ public class GameWorldState extends State {
 
     public String textTutorial;
     public int currentSize = 1;
-    
+    private int highScore = 0;
     private boolean finalbossTrigger = true;
     ParticularObject boss;
     
@@ -71,6 +74,7 @@ public class GameWorldState extends State {
     
     public AudioClip bgMusic;
     private int score=0;
+    private boolean isGameOver;
     
     public GameWorldState(GamePanel gamePanel){
             super(gamePanel);
@@ -90,7 +94,7 @@ public class GameWorldState extends State {
         backgroundMap = new BackgroundMap(0, 0, this);
         camera = new Camera(0, 50, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT, this);
         bulletManager = new BulletManager(this);
-        
+         isGameOver = false;
         particularObjectManager = new ParticularObjectManager(this);
         particularObjectManager.addObject(megaMan);
         
@@ -159,11 +163,46 @@ public class GameWorldState extends State {
         smallRedGun2.setTeamType(ParticularObject.ENEMY_TEAM);
         particularObjectManager.addObject(smallRedGun2);
     }
+     public boolean isGameOver() {
+        return isGameOver;
+    }
 
+    public void setGameOver(boolean gameOver) {
+        isGameOver = gameOver;
+    }
     public void switchState(int state){
         previousState = this.state;
         this.state = state;
     }
+      public void onGameOver(int userId, int score) {
+        DatabaseManager dbManager = new DatabaseManager();
+        
+        // Cập nhật điểm số cao nhất nếu điểm số mới cao hơn điểm số cao nhất hiện tại
+        if (score > highScore) {
+            highScore = score;
+            dbManager.updateHighScore(userId, highScore);
+            System.out.println("High score updated to: " + highScore); // Ghi log
+        }
+
+        // Lưu lịch sử trò chơi
+        dbManager.saveGameHistory(userId, score);
+        System.out.println("Game history saved with score: " + score); // Ghi log
+    }
+
+    public void onGameWin(int userId, int score) {
+        DatabaseManager dbManager = new DatabaseManager();
+        
+        // Cập nhật điểm số cao nhất nếu điểm số mới cao hơn điểm số cao nhất hiện tại
+        if (score > highScore) {
+            highScore = score;
+            dbManager.updateHighScore(userId, highScore);
+        }
+
+        // Lưu lịch sử trò chơi
+        dbManager.saveGameHistory(userId, score);
+    }
+
+    
     
     private void TutorialUpdate(){
         switch(tutorialState){
@@ -306,10 +345,10 @@ public class GameWorldState extends State {
                 
                 break;
             case GAMEOVER:
-                
+                 onGameOver(1, score);
                 break;
             case GAMEWIN:
-                
+                onGameWin(1, score); 
                 break;
         }
         
@@ -369,11 +408,12 @@ public class GameWorldState extends State {
                 }
                 break;
             case GAMEOVER:
-                g2.setColor(Color.BLACK);
-                g2.fillRect(0, 0, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT);
-                g2.setColor(Color.WHITE);
-                g2.drawString("GAME OVER!", 450, 300);
-                break;
+                 g2.setColor(Color.BLACK);
+                    g2.fillRect(0, 0, GameFrame.SCREEN_WIDTH, GameFrame.SCREEN_HEIGHT);
+                    g2.setColor(Color.WHITE);
+                    g2.drawString("GAME OVER!", 450, 300);
+                    g2.drawString("PRESS ENTER TO RESTART", 400, 350);
+                    break;
         }
 
         g2.dispose(); // Giải phóng tài nguyên đồ họa
@@ -460,9 +500,15 @@ public class GameWorldState extends State {
                 break;
                 
             case KeyEvent.VK_ENTER:
-                if(state == GAMEOVER || state == GAMEWIN) {
+                  if (state == GAMEOVER) {
+                    // Giả sử userId đã được lưu trữ khi đăng nhập
+                    int userId = 1; // Bạn cần lấy userId thật từ đâu đó
+                    onGameOver(userId, score);
+                    resetGame();
+                    switchState(INIT_GAME);
+                } else if (state == GAMEWIN) {
                     gamePanel.setState(new MenuState(gamePanel));
-                } else if(state == PAUSEGAME) {
+                } else if (state == PAUSEGAME) {
                     state = lastState;
                 }
                 break;
@@ -478,6 +524,7 @@ public class GameWorldState extends State {
                 lastState = state;
                 state = PAUSEGAME;
                 break;
+                
                 
         }}
 
@@ -495,4 +542,18 @@ public class GameWorldState extends State {
             incrementScore(10); // Tăng 10 điểm khi nhấn phím A
         }
     }
+
+    private void resetGame() {
+        numberOfLife = 3;
+        score = 0;
+        isGameOver = false;
+        megaMan.setBlood(100);
+        megaMan.setPosX(400); // Ví dụ: Đặt lại vị trí của MegaMan
+        megaMan.setPosY(400); // Ví dụ: Đặt lại vị trí của MegaMan
+        megaMan.setState(ParticularObject.NOBEHURT);
+        particularObjectManager.clear(); // Xóa các đối tượng hiện tại
+        initEnemies(); // Khởi tạo lại kẻ thù
+        // Reset các thuộc tính khác nếu cần
+    }
+
 }
